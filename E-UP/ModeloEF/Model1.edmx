@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EupModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="AuditoriaID" />
+          </Key>
+          <Property Name="AuditoriaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Accion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Tabla" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegistroID" Type="int" />
+          <Property Name="FechaAccion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="CargoID" />
+          </Key>
+          <Property Name="CargoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreCargo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="DepartamentoID" />
+          </Key>
+          <Property Name="DepartamentoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreDepartamento" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empleados">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DepartamentoID" Type="int" Nullable="false" />
+          <Property Name="CargoID" Type="int" Nullable="false" />
+          <Property Name="FechaInicio" Type="date" Nullable="false" />
+          <Property Name="FechaFin" Type="date" />
+          <Property Name="SueldoBruto" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="FotoEmpleado" Type="varbinary(max)" />
+          <Property Name="ExtensionImagen" Type="nvarchar" MaxLength="10" />
+          <Property Name="FechaRegistro" Type="datetime" StoreGeneratedPattern="Computed" />
+          <Property Name="AFP" Type="numeric" Precision="15" Scale="6" StoreGeneratedPattern="Computed" />
+          <Property Name="ARS" Type="numeric" Precision="15" Scale="6" StoreGeneratedPattern="Computed" />
+          <Property Name="ISR" Type="numeric" Precision="21" Scale="7" StoreGeneratedPattern="Computed" />
+          <Property Name="TotalDescuentos" Type="numeric" Precision="22" Scale="7" StoreGeneratedPattern="Computed" />
+          <Property Name="SueldoNeto" Type="numeric" Precision="23" Scale="7" StoreGeneratedPattern="Computed" />
+          <Property Name="TiempoEnEmpresa" Type="varchar" MaxLength="16" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RolID" />
+          </Key>
+          <Property Name="RolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreRol" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreUsuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RolID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Usuarios__RolID__44FF419A">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RolID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleados_Cargo">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="1" />
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="CargoID" />
+            </Principal>
+            <Dependent Role="Empleados">
+              <PropertyRef Name="CargoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleados_Departamento">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="DepartamentoID" />
+            </Principal>
+            <Dependent Role="Empleados">
+              <PropertyRef Name="DepartamentoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EupModelStoreContainer">
+          <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Usuarios__RolID__44FF419A" Association="Self.FK__Usuarios__RolID__44FF419A">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleados_Cargo" Association="Self.FK_Empleados_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Empleados" EntitySet="Empleados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleados_Departamento" Association="Self.FK_Empleados_Departamento">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Empleados" EntitySet="Empleados" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EupModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="AuditoriaID" />
+          </Key>
+          <Property Name="AuditoriaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Accion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tabla" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegistroID" Type="Int32" />
+          <Property Name="FechaAccion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="CargoID" />
+          </Key>
+          <Property Name="CargoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreCargo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Empleados" Relationship="Self.FK_Empleados_Cargo" FromRole="Cargo" ToRole="Empleados" />
+        </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="DepartamentoID" />
+          </Key>
+          <Property Name="DepartamentoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreDepartamento" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Empleados" Relationship="Self.FK_Empleados_Departamento" FromRole="Departamento" ToRole="Empleados" />
+        </EntityType>
+        <EntityType Name="Empleados">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DepartamentoID" Type="Int32" Nullable="false" />
+          <Property Name="CargoID" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaFin" Type="DateTime" Precision="0" />
+          <Property Name="SueldoBruto" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="FotoEmpleado" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ExtensionImagen" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="AFP" Type="Decimal" Precision="15" Scale="6" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ARS" Type="Decimal" Precision="15" Scale="6" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ISR" Type="Decimal" Precision="21" Scale="7" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TotalDescuentos" Type="Decimal" Precision="22" Scale="7" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="SueldoNeto" Type="Decimal" Precision="23" Scale="7" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TiempoEnEmpresa" Type="String" MaxLength="16" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Cargo" Relationship="Self.FK_Empleados_Cargo" FromRole="Empleados" ToRole="Cargo" />
+          <NavigationProperty Name="Departamento" Relationship="Self.FK_Empleados_Departamento" FromRole="Empleados" ToRole="Departamento" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RolID" />
+          </Key>
+          <Property Name="RolID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreRol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK__Usuarios__RolID__44FF419A" FromRole="Roles" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RolID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK__Usuarios__RolID__44FF419A" FromRole="Usuarios" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Empleados_Cargo">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="1" />
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="CargoID" />
+            </Principal>
+            <Dependent Role="Empleados">
+              <PropertyRef Name="CargoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Empleados_Departamento">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="DepartamentoID" />
+            </Principal>
+            <Dependent Role="Empleados">
+              <PropertyRef Name="DepartamentoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuarios__RolID__44FF419A">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RolID" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EupEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Auditoria" EntityType="Self.Auditoria" />
+          <EntitySet Name="Cargo" EntityType="Self.Cargo" />
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleados" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK_Empleados_Cargo" Association="Self.FK_Empleados_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Empleados" EntitySet="Empleados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Empleados_Departamento" Association="Self.FK_Empleados_Departamento">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Empleados" EntitySet="Empleados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuarios__RolID__44FF419A" Association="Self.FK__Usuarios__RolID__44FF419A">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EupModelStoreContainer" CdmEntityContainer="EupEntities1">
+          <EntitySetMapping Name="Auditoria">
+            <EntityTypeMapping TypeName="EupModel.Auditoria">
+              <MappingFragment StoreEntitySet="Auditoria">
+                <ScalarProperty Name="AuditoriaID" ColumnName="AuditoriaID" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Accion" ColumnName="Accion" />
+                <ScalarProperty Name="Tabla" ColumnName="Tabla" />
+                <ScalarProperty Name="RegistroID" ColumnName="RegistroID" />
+                <ScalarProperty Name="FechaAccion" ColumnName="FechaAccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cargo">
+            <EntityTypeMapping TypeName="EupModel.Cargo">
+              <MappingFragment StoreEntitySet="Cargo">
+                <ScalarProperty Name="CargoID" ColumnName="CargoID" />
+                <ScalarProperty Name="NombreCargo" ColumnName="NombreCargo" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departamento">
+            <EntityTypeMapping TypeName="EupModel.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="NombreDepartamento" ColumnName="NombreDepartamento" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleados">
+            <EntityTypeMapping TypeName="EupModel.Empleados">
+              <MappingFragment StoreEntitySet="Empleados">
+                <ScalarProperty Name="EmpleadoID" ColumnName="EmpleadoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="CargoID" ColumnName="CargoID" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="SueldoBruto" ColumnName="SueldoBruto" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FotoEmpleado" ColumnName="FotoEmpleado" />
+                <ScalarProperty Name="ExtensionImagen" ColumnName="ExtensionImagen" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="AFP" ColumnName="AFP" />
+                <ScalarProperty Name="ARS" ColumnName="ARS" />
+                <ScalarProperty Name="ISR" ColumnName="ISR" />
+                <ScalarProperty Name="TotalDescuentos" ColumnName="TotalDescuentos" />
+                <ScalarProperty Name="SueldoNeto" ColumnName="SueldoNeto" />
+                <ScalarProperty Name="TiempoEnEmpresa" ColumnName="TiempoEnEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="EupModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RolID" ColumnName="RolID" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="EupModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="RolID" ColumnName="RolID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
