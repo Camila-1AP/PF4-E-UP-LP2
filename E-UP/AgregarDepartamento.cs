@@ -257,6 +257,11 @@ namespace E_UP
 
         private void iconButton3_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtReactivarDepaID.Text))
+            {
+                MessageBox.Show("El campo Reactivar ID del Departamento es obligatorio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             int departamentoID = Convert.ToInt32(txtReactivarDepaID.Text);
             ModeloEF.Departamento departamento = _context.Departamento.FirstOrDefault(q => q.DepartamentoID.Equals(departamentoID));
 

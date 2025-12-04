@@ -179,7 +179,11 @@ namespace E_UP
 
         private void iconDelete_Click(object sender, EventArgs e)
         {
-           
+            if (string.IsNullOrEmpty(txtIDeliminar.Text))
+            {
+                MessageBox.Show("El campo ID del Cargo es obligatorio para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             int cargoID = Convert.ToInt32(txtIDeliminar.Text);
             ModeloEF.Cargo cargo = _context.Cargo.FirstOrDefault(q => q.CargoID.Equals(cargoID));
 
@@ -260,6 +264,11 @@ namespace E_UP
 
         private void iconButton1_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtReactivarCargoID.Text))
+            {
+                MessageBox.Show("El campo Reactivar ID del Cargo es obligatorio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             int cargoID = Convert.ToInt32(txtReactivarCargoID.Text);
             ModeloEF.Cargo cargo = _context.Cargo.FirstOrDefault(q => q.CargoID.Equals(cargoID));
 

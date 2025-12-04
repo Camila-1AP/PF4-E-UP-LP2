@@ -99,6 +99,12 @@ namespace E_UP
 
         private void iconButtonExcel_Click(object sender, EventArgs e)
         {
+            var listaAuditoria = _context.Auditoria.ToList();
+            if (listaAuditoria.Count == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("No hay Auditoría para exportar.");
+                return;
+            }
             if (System.Windows.Forms.MessageBox.Show("¿Desea exportar en formato Excel", "Exportar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 ExportarExcel();
